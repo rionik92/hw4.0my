@@ -2,7 +2,7 @@ import java.util.Random;
 
 public class Main {
 
-    public static int[] health = {1700, 250, 250, 250, 250, 250, 120, 1000, 250};
+    public static int[] health = {2000, 250, 250, 250, 250, 250, 120, 1000, 250};
     public static int[] hits = {50, 20, 20, 20, 10, 21, 15, 5, 20};
     public static String[] hitTipes = {"Physical", "Physical", "Magical",
             "Mental", "Medical", "Tor", "Trickster", "Tank", "Berserk"};/*    */
@@ -65,8 +65,8 @@ public class Main {
     public static int playerHit(int playerIndex) {
         Random r = new Random();
         int randomNumber = r.nextInt(2) + 2;
-        //сделать чтобы супер удар работал только пока живы войны
-        if (hitTipes[0].equals(hitTipes[playerIndex])) {
+        //супер удар работает только пока живы войны
+        if (health[playerIndex] > 0 && (hitTipes[0].equals(hitTipes[playerIndex]))) {
             System.out.println(hitTipes[playerIndex] + " hits: " + hits[playerIndex]
                     * randomNumber);
             return health[0] - hits[playerIndex] * randomNumber;
