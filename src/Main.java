@@ -2,21 +2,21 @@ import java.util.Random;
 
 public class Main {
 
-    public static int[] health = {1300, 250, 250, 250, 250, 250, 120};
-    public static int[] hits = {50, 20, 20, 20, 10, 21, 15};
+    public static int[] health = {1700, 250, 250, 250, 250, 250, 120, 1000, 250};
+    public static int[] hits = {50, 20, 20, 20, 10, 21, 15, 5, 20};
     public static String[] hitTipes = {"Physical", "Physical", "Magical",
-            "Mental", "Medical", "Tor", "Trickster"};/* "Tank" "Berserk"  */
+            "Mental", "Medical", "Tor", "Trickster", "Tank", "Berserk"};/*    */
 
     public static void main(String[] args) {
         while (!isFinished()) {
-           // for (int i = 1; i <= 20; i++) {   //переделать цикл чтобы показывал номер раунда
-                System.out.println("___***___New round___***___"/* + i*/);
-                changeBossDefence();
-                round();
-                printStatistics();
-            }
+            // for (int i = 1; i <= 20; i++) {   //переделать цикл чтобы показывал номер раунда
+            System.out.println("___***___New round___***___"/* + i*/);
+            changeBossDefence();
+            round();
+            printStatistics();
         }
-    
+    }
+
 
     public static void round() {
         for (int i = 1; i <= 6; i++) {
@@ -30,15 +30,28 @@ public class Main {
             }
         }
         torHit();
+        tankHit();
         if (health[0] > 0) {
             for (int i = 1; i <= 5; i++) {
                 health[i] = bossHit(i);
+            }
+            if (health[7] > 0) {                //Tank[7]
+                health[7] = health[7] - hits[0] * 6;
+            } else if (health[7] <= 0) {
+                health[7] = 0;
+            }
+
+            if (health[8] > 0) {                   //Berserk[8]
+                health[8] = health[8] - hits[0] + 5;
+                health[0] = health[0] - 5;
+            } else if (health[8] <= 0) {
+                health[8] = 0;
             }
 
             if (health[4] <= 0) {   //Medic[4] (как можно сделать цикл лечения медика чтобы он лечил всех кроме себя?)
                 health[4] = 0;
             } else if (health[4] > 0) {
-                for (int i = 1; i <= 6; i++) {
+                for (int i = 1; i <= 8; i++) {
                     health[i] = hits[4] + health[i];
                 }
             }
@@ -69,6 +82,10 @@ public class Main {
         return health[playerIndex] - hits[0];
     }
 
+    public static int tankHit() {
+        return hits[0] = hits[0] / 2;
+    }
+
     public static boolean isFinished() {
 
         if (health[0] <= 0) {
@@ -85,7 +102,7 @@ public class Main {
 
 
     public static void printStatistics() {
-        for (int i = 0; i <= 6; i++) {
+        for (int i = 0; i <= 8; i++) {
             if (health[i] <= 0) {
                 health[i] = 0;
             }
@@ -99,6 +116,8 @@ public class Main {
         System.out.println("Medical health: " + health[4]);
         System.out.println("Tor health: " + health[5]);
         System.out.println("Trickster health: " + health[6]);
+        System.out.println("Tank health: " + health[7]);
+        System.out.println("Berserk health: " + health[8]);
         System.out.println("_________________________");
     }
 
